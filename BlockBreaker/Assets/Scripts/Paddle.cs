@@ -23,7 +23,7 @@ public class Paddle : MonoBehaviour
         xmin = leftmost.x + size / 2;
         xmax = rightmost.x - size / 2;
 
-        ball.GetComponent<Rigidbody2D>().velocity = new Vector3(5, 1, 0);
+        ball.GetComponent<Rigidbody2D>().velocity = new Vector3(5, 3, 0);
     }
 
     // Update is called once per frame
