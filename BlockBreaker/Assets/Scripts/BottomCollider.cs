@@ -19,7 +19,7 @@ public class BottomCollider : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        print("bottom collider triggered!");
+        LevelManager.shared.OnGameOver();
     }
 
 }
