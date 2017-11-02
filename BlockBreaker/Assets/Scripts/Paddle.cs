@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Paddle : MonoBehaviour {
+public class Paddle : MonoBehaviour
+{
 
     private bool started = false;
     private Ball ball;
-    
+
     private float xmin;
     private float xmax;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         ball = FindObjectOfType<Ball>() as Ball;
 
         // float cameraDistance = transform.position.z - Camera.main.transform.position.z;
@@ -22,17 +24,19 @@ public class Paddle : MonoBehaviour {
         xmin = leftmost.x + size / 2;
         xmax = rightmost.x - size / 2;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         float cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
         float x = Mathf.Clamp(cursorPos, xmin, xmax);
         transform.position = new Vector3(x, transform.position.y);
-	}
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!started) {
+        if (!started)
+        {
             started = true;
             ball.GetComponent<Rigidbody2D>().velocity = new Vector3(5, 5, 0);
         }
