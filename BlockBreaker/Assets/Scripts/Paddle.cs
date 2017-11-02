@@ -5,7 +5,6 @@ using UnityEngine;
 public class Paddle : MonoBehaviour
 {
 
-    private bool started = false;
     private Ball ball;
 
     private float xmin;
@@ -23,6 +22,8 @@ public class Paddle : MonoBehaviour
         float size = GetComponent<Collider2D>().bounds.size.x;
         xmin = leftmost.x + size / 2;
         xmax = rightmost.x - size / 2;
+
+        ball.GetComponent<Rigidbody2D>().velocity = new Vector3(5, 1, 0);
     }
 
     // Update is called once per frame
@@ -31,14 +32,5 @@ public class Paddle : MonoBehaviour
         float cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
         float x = Mathf.Clamp(cursorPos, xmin, xmax);
         transform.position = new Vector3(x, transform.position.y);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (!started)
-        {
-            started = true;
-            ball.GetComponent<Rigidbody2D>().velocity = new Vector3(5, 5, 0);
-        }
     }
 }
