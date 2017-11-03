@@ -23,6 +23,7 @@ public class Paddle : MonoBehaviour
         xmin = leftmost.x + size / 2;
         xmax = rightmost.x - size / 2;
 
+        // TODO: factor out "game start"
         ball.GetComponent<Rigidbody2D>().velocity = new Vector3(5, 3, 0);
     }
 
