@@ -57,4 +57,51 @@ public class Paddle : MonoBehaviour
             ball.transform.position = new Vector3(newBallX, ball.transform.position.y);
         }
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag != "Player")
+        {
+            return;
+        }
+
+        ContactPoint2D[] contacts = new ContactPoint2D[2];
+        int numberOfContatcts = collision.GetContacts(contacts);
+        if (numberOfContatcts == 0)
+        {
+            return;
+        }
+
+        ContactPoint2D contact = contacts[0];
+        float extent = contact.collider.bounds.extents.x;
+        float center = contact.collider.bounds.center.x;
+        float contactPoint = contact.point.x;
+
+        float linearParameter;
+        if (contactPoint <= center)
+        {
+            linearParameter = Mathf.InverseLerp(center - extent, center, contactPoint) - 1;
+        }
+        else
+        {
+            linearParameter = Mathf.InverseLerp(center, center + extent, contactPoint);
+        }
+
+        float directionX = linearParameter * 10;
+        float directionY = (1 - Mathf.Abs(linearParameter)) * 10;
+        if (directionY < 1)
+        {
+            directionY = 1;
+        }
+
+        Rigidbody2D ball = collision.gameObject.GetComponent<Rigidbody2D>();
+        Vector3 oldVelocity = ball.velocity;
+        Vector3 newVelocity = new Vector3(directionX, directionY).normalized * oldVelocity.magnitude;
+        ball.velocity = newVelocity;
+    }
+
+    void CollisionWithPlayer(ContactPoint2D contact)
+    {
+        
+    }
 }

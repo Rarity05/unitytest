@@ -30,6 +30,11 @@ public class Ball : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.tag == "Player")
+        {
+            return;
+        }
+
         // TODO: factor out speed handling
         hitCounter += 1;
         if (hitCounter >= speedIncreaseDelay)
@@ -50,42 +55,7 @@ public class Ball : MonoBehaviour
         }
 
         ContactPoint2D contact = contacts[0];
-        if (collision.gameObject.tag == "Player")
-        {
-            CollisionWithPlayer(contact);
-        }
-        else
-        {
-            CollisionWithOther(contact);
-        }
-    }
-
-    void CollisionWithPlayer(ContactPoint2D contact)
-    {
-        float extent = contact.collider.bounds.extents.x;
-        float center = contact.collider.bounds.center.x;
-        float contactPoint = contact.point.x;
-
-        float linearParameter;
-        if (contactPoint <= center)
-        {
-            linearParameter = Mathf.InverseLerp(center - extent, center, contactPoint) - 1;
-        }
-        else
-        {
-            linearParameter = Mathf.InverseLerp(center, center + extent, contactPoint);
-        }
-
-        float directionX = linearParameter * 10;
-        float directionY = (1 - Mathf.Abs(linearParameter)) * 10;
-        if (directionY < 1)
-        {
-            directionY = 1;
-        }
-
-        Vector3 newDirection = new Vector3(directionX, directionY).normalized;
-        velocity = newDirection * velocity.magnitude;
-        rigidBody.velocity = velocity;
+        CollisionWithOther(contact);
     }
 
     void CollisionWithOther(ContactPoint2D contact)
