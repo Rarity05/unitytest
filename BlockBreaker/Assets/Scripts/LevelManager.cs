@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 {
 
     public static LevelManager shared;
+    public bool started = false;
 
     // Use this for initialization
     void Start()

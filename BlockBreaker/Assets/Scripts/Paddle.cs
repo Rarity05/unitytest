@@ -4,22 +4,10 @@ using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
-
-    struct HoldingBall
-    {
-        public Ball ball;
-        public Vector3 velocity;
-
-        public HoldingBall(Ball ball, Vector3 velocity)
-        {
-            this.ball = ball;
-            this.velocity = velocity;
-        }
-    }
-
-    private List<HoldingBall> holdingBalls = new List<HoldingBall>();
     private float xmin;
     private float xmax;
+
+    private Ball ball;
 
     // Use this for initialization
     void Start()
@@ -32,11 +20,8 @@ public class Paddle : MonoBehaviour
         xmin = leftmost.x + size / 2;
         xmax = rightmost.x - size / 2;
 
-        Ball startingBall = FindObjectOfType<Ball>() as Ball;
-        startingBall.transform.position = new Vector3(colliderBounds.center.x + colliderBounds.extents.x / 2, colliderBounds.max.y);
-        // TODO: let the collision script calculate this vector.
-        Vector3 startingVelocity = new Vector3(5, 3, 0);
-        holdingBalls.Add(new HoldingBall(startingBall, startingVelocity));
+        ball = FindObjectOfType<Ball>() as Ball;
+        ball.transform.position = new Vector3(colliderBounds.center.x + colliderBounds.extents.x / 2, colliderBounds.max.y);
     }
 
     // Update is called once per frame
@@ -49,12 +34,21 @@ public class Paddle : MonoBehaviour
         // Move the Paddle.
         transform.position = new Vector3(newPaddleX, transform.position.y);
 
-        // Move all the Balls that are currently held by the Paddle.
-        foreach (HoldingBall holdingBall in holdingBalls)
+        if (!LevelManager.shared.started)
         {
-            Ball ball = holdingBall.ball;
             float newBallX = ball.transform.position.x + (newPaddleX - oldPaddleX);
             ball.transform.position = new Vector3(newBallX, ball.transform.position.y);
         }
+    }
+
+    private void OnMouseDown()
+    {
+        if (LevelManager.shared.started)
+        {
+            return;
+        }
+
+        LevelManager.shared.started = true;
+        ball.GetComponent<Rigidbody2D>().velocity = new Vector3(5, 3, 0);
     }
 }

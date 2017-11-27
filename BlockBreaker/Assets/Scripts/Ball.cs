@@ -10,7 +10,7 @@ public class Ball : MonoBehaviour
     public int speedIncreaseDelay = 5;
 
     private Rigidbody2D rigidBody;
-    private Vector3 velocity;
+    private Vector3 velocity = new Vector3(5, 3, 0);
     private int currentSpeed = 1;
     
     private int hitCounter = 0;
@@ -19,7 +19,6 @@ public class Ball : MonoBehaviour
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
-        velocity = rigidBody.velocity;
     }
 
     // Update is called once per frame
@@ -62,6 +61,11 @@ public class Ball : MonoBehaviour
 
     void CollisionWithPlayer(ContactPoint2D contact)
     {
+        if (!LevelManager.shared.started)
+        {
+            return;
+        }
+
         float extent = contact.collider.bounds.extents.x;
         float center = contact.collider.bounds.center.x;
         float contactPoint = contact.point.x;
