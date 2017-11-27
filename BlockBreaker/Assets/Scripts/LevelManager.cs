@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
 
     public static LevelManager shared;
     public bool started = false;
+    private int brickCount = 0;
 
     // Use this for initialization
     void Start()
@@ -31,7 +32,22 @@ public class LevelManager : MonoBehaviour
 
     public void OnGameStart()
     {
+        brickCount = 0;
         SceneManager.LoadScene("level_01");
+    }
+
+    public void AddBrick()
+    {
+        brickCount++;
+    }
+
+    public void RemoveBrick()
+    {
+        brickCount--;
+        if (brickCount == 0)
+        {
+            OnGameOver();
+        }
     }
 
 }
