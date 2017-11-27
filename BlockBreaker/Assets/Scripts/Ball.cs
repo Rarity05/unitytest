@@ -14,6 +14,7 @@ public class Ball : MonoBehaviour
     private int currentSpeed = 1;
     
     private int hitCounter = 0;
+    private bool collided = false;
 
     // Use this for initialization
     void Start()
@@ -24,11 +25,17 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        collided = false;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collided)
+        {
+            return;
+        }
+        collided = true;
+
         // TODO: factor out speed handling
         hitCounter += 1;
         if (hitCounter >= speedIncreaseDelay)
